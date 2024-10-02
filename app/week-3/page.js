@@ -1,14 +1,11 @@
-import EventList from "./event-list";
-import Weather from "./weather";
+// week-3/page.js
+import ItemList from './item-list';
 
 export default function Page() {
-  return (
-    <main>
-      <h1 className="text-4xl font-bold m-6 text-center text-yellow-300">
-        Community Events
-      </h1>
-      <EventList />
-      <Weather />
-    </main>
-  );
+    return (
+        <main className="p-8">
+            <h1 className="text-3xl font-bold mb-4">Shopping List</h1>
+            <ItemList />
+        </main>
+    );
 }
