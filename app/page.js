@@ -1,21 +1,13 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-export default function Home() {
-  const weekDemos = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
+export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between text-sm">
-        <h1 className="text-4xl font-bold mb-5">Web Development 2 Demos</h1>
-        <div className="text-lg">
-          <ul>
-            {weekDemos.map((week) => (
-              <li key={week} className="hover:text-green-400 hover:underline">
-                <Link href={`/week-${week}`}>Week {week} Demo</Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+    <main className="flex flex-col items-center justify-center min-h-screen p-4">
+      <h1 className="text-4xl font-bold text-center">CPRG 306: Web Development 2 - Assignments</h1>
+      <div className="mt-8 text-lg">
+        <Link href="/week-2" className="text-blue-600 hover:text-blue-800">
+          Go to Week 2 Assignment
+        </Link>
       </div>
     </main>
   );
