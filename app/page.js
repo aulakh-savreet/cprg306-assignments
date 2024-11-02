@@ -30,6 +30,11 @@ export default function HomePage() {
             Go to Week 6 Assignment
           </Link>
         </div>
+        <div className="mb-4">  
+          <Link href="/week-7" className="text-blue-600 hover:text-blue-800">
+            Go to Week 7 Assignment
+          </Link>
+        </div>
       </div>
     </main>
   );
