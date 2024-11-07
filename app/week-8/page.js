@@ -1,65 +1,34 @@
-"use client";
-
-import { useState } from "react";
-import eventsData from "./events.json";
-import NewEvent from "./new-event";
-import EventList from "./event-list";
-import Weather from "./weather";
+"use client"; 
+import React, { useState } from 'react';
+import NewItem from './new-item';
+import ItemList from './item-list';
+import MealIdeas from './meal-ideas';
+import itemsData from './items.json'; 
 
 export default function Page() {
-  // read events from events.json and convert date strings to Date objects
-  const [events, setEvents] = useState(
-    eventsData.map((event) => ({
-      ...event,
-      date: new Date(event.date),
-    }))
-  );
+  const [items, setItems] = useState(itemsData);
+  const [selectedItemName, setSelectedItemName] = useState('');
 
-  const [newEventOpen, setNewEventOpen] = useState(false);
-
-  const handleCreateEvent = (event) => {
-    setEvents([...events, event]);
+  const handleAddItem = newItem => {
+    setItems(prevItems => [...prevItems, { ...newItem, id: Date.now().toString() }]);
   };
 
-  const handleCloseNewEvent = () => {
-    setNewEventOpen(false);
-  };
+  function handleItemSelect(item) {
+    let cleanName = item.name.split(',')[0]; 
+    cleanName = cleanName.replace(/[\u{1F300}-\u{1F6FF}\u{1F900}-\u{1F9FF}]/gu, '').trim(); // Remove emojis
+    setSelectedItemName(cleanName);
+  }
 
   return (
-    <main>
-      <h1 className="text-4xl font-bold m-6 text-center text-yellow-300">
-        Community Events
-      </h1>
-      <Weather />
-      <div className="fixed right-16 bottom-16">
-        <button
-          className="bg-yellow-500 hover:bg-yellow-300 text-blue-900 font-bold py-2 px-2 rounded-full w-20 h-20 flex items-center justify-center"
-          onClick={() => setNewEventOpen(true)}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            className="h-8 w-8"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M12 4v16m8-8H4"
-            ></path>
-          </svg>
-        </button>
+    <div className="flex">
+      <div className="w-1/2 p-4">
+        <h1 className="text-3xl font-bold text-center my-6">Shopping List</h1> 
+        <NewItem onAddItem={handleAddItem} />
+        <ItemList items={items} onItemSelect={handleItemSelect} />
       </div>
-
-      {newEventOpen && (
-        <NewEvent
-          onCreateEvent={handleCreateEvent}
-          onCloseNewEvent={handleCloseNewEvent}
-        />
-      )}
-      <EventList events={events} />
-    </main>
+      <div className="w-1/2 p-4">
+        {selectedItemName && <MealIdeas ingredient={selectedItemName} />}
+      </div>
+    </div>
   );
 }
