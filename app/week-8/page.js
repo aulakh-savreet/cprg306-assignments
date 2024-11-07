@@ -15,7 +15,7 @@ export default function Page() {
 
   function handleItemSelect(item) {
     let cleanName = item.name.split(',')[0]; 
-    cleanName = cleanName.replace(/[\u{1F300}-\u{1F6FF}\u{1F900}-\u{1F9FF}]/gu, '').trim(); // Remove emojis
+    cleanName = cleanName.replace(/[\u{1F300}-\u{1F6FF}\u{1F900}-\u{1F9FF}]/gu, '').trim(); 
     setSelectedItemName(cleanName);
   }
 
