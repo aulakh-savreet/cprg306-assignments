@@ -1,51 +1,40 @@
 "use client";
-
-import { useState } from "react";
-import eventsData from "./_data/events.json";
-import NewEvent from "./_components/new-event";
-import EventList from "./_components/event-list";
-import NewEventButton from "./_components/new-event-button";
-import Weather from "./_components/weather";
-import SignIn from "./_components/sign-in";
+import { useEffect } from 'react';
 import { useUserAuth } from "./_utils/auth-context";
 
-export default function Page() {
-  // read events from events.json and convert date strings to Date objects
-  const [events, setEvents] = useState(
-    eventsData.map((event) => ({
-      ...event,
-      date: new Date(event.date),
-    }))
-  );
+const LandingPage = () => {
+  const { user, gitHubSignIn, firebaseSignOut } = useUserAuth();
 
-  const { user } = useUserAuth();
-
-  const [newEventOpen, setNewEventOpen] = useState(false);
-
-  const handleCreateEvent = (event) => {
-    setEvents([...events, event]);
+  const handleLogin = async () => {
+    try {
+      await gitHubSignIn();
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
   };
 
-  const handleCloseNewEvent = () => {
-    setNewEventOpen(false);
+  const handleLogout = async () => {
+    try {
+      await firebaseSignOut();
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   return (
-    <main>
-      <h1 className="text-4xl font-bold m-6 text-center text-yellow-300">
-        Community Events
-      </h1>
-      <SignIn />
-      <Weather />
-      {user && <NewEventButton onClick={() => setNewEventOpen(true)} />}
-
-      {newEventOpen && (
-        <NewEvent
-          onCreateEvent={handleCreateEvent}
-          onCloseNewEvent={handleCloseNewEvent}
-        />
+    <div>
+      <h1>Welcome to Our Shopping List</h1>
+      {user ? (
+        <div>
+          <p>Welcome, {user.displayName} ({user.email})</p>
+          <button onClick={handleLogout}>Logout</button>
+          <a href="/week-9/shopping-list">Go to Shopping List</a>
+        </div>
+      ) : (
+        <button onClick={handleLogin}>Login with GitHub</button>
       )}
-      <EventList events={events} />
-    </main>
+    </div>
   );
-}
+};
+
+export default LandingPage;
